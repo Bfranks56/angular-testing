@@ -2,6 +2,10 @@ import { TestBed } from "@angular/core/testing";
 import { CalculatorService } from "./calculator.service";
 import { LoggerService } from "./logger.service";
 
+// Notes Pertaining to Chapter 10:
+// x - skips unit test
+// f - focuses on that specific test ONLY
+
 describe('CalculatorService', () => {
 
     // define objects/variables here for global utilization
