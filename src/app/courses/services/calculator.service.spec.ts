@@ -1,3 +1,4 @@
+import { TestBed } from "@angular/core/testing";
 import { CalculatorService } from "./calculator.service";
 import { LoggerService } from "./logger.service";
 
@@ -15,7 +16,15 @@ describe('CalculatorService', () => {
         // array contains methods used in the service, if array is empty, no methods can be used by the spy object
         loggerSpy = jasmine.createSpyObj('LoggerService', ["log"]);
 
-        calculator = new CalculatorService(loggerSpy);
+        // Testbed is used for dependency injection
+        TestBed.configureTestingModule({
+            providers: [
+                CalculatorService,
+                {provide: LoggerService, useValue: loggerSpy}
+            ]
+        });
+
+        calculator = TestBed.get(CalculatorService);
     });
 
     it ('should add two numbers', () => {
@@ -35,6 +44,4 @@ describe('CalculatorService', () => {
         expect(result).toBe(0, "unexpected subtraction result");
         expect(loggerSpy.log).toHaveBeenCalledTimes(1);
     });
-
-
 });
