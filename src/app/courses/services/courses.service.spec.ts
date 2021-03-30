@@ -2,6 +2,7 @@ import { TestBed } from "@angular/core/testing";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { CoursesService } from "./courses.service";
 import { COURSES } from "../../../../server/db-data";
+import { Course } from "../model/course";
 
 describe("CoursesService", () => {
 
@@ -59,6 +60,31 @@ describe("CoursesService", () => {
         expect(req.request.method).toEqual("GET");
 
         req.flush(COURSES[12]);
+    });
+
+    it('should save the course data', () => {
+        // testing that we can change the title of the course description
+        const changes :Partial<Course> = {titles:{description: 'Testing Course'}};
+
+        coursesService.saveCourse(12, changes)
+        .subscribe(course => {
+
+            expect(course.id).toBe(12);
+
+        });
+
+        const req = httpTestingController.expectOne('/api/courses/12');
+
+        // verifies method is PUT
+        expect(req.request.method).toEqual("PUT");
+        // tests that description title was saved.
+        expect(req.request.body.titles.description).toEqual(changes.titles.description);
+
+        req.flush({
+            // 3 dots are the spread operator
+            ...COURSES[12],
+            ...changes
+        })
     });
 
     afterEach(() =>{
