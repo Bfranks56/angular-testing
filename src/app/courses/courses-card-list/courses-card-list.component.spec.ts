@@ -16,6 +16,7 @@ describe('CoursesCardListComponent', () => {
   // declaration for component setup in testing
   let component: CoursesCardListComponent;
   let fixture: ComponentFixture<CoursesCardListComponent>;
+  let el: DebugElement;
 
   // needs async or else tests will always fail due to never waiting for the promise .then()
   beforeEach(waitForAsync(() => {
@@ -27,8 +28,8 @@ describe('CoursesCardListComponent', () => {
       .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(CoursesCardListComponent);
-
         component = fixture.componentInstance;
+        el = fixture.debugElement;
       });
   }));
 
@@ -39,11 +40,15 @@ describe('CoursesCardListComponent', () => {
 
   });
 
-
+  // this test fails. fix will be in PR 20.
   it("should display the course list", () => {
 
-    pending();
+    component.courses = setupCourses();
+    // identifies all elements with the css clsss 'course-card'
+    const cards = el.queryAll(By.css(".course-card"));
 
+    expect(cards).toBeTruthy('Could not find cards');
+    expect(cards.length).toBe(12, 'Unexpected Number of Courses');
   });
 
 
