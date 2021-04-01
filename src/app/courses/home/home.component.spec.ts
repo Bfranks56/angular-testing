@@ -89,10 +89,28 @@ describe('HomeComponent', () => {
 
   });
 
-
+  // in PR 25 this test fails. the solution for asynchronous testing will begin in PR 26
   it("should display advanced courses when tab clicked", () => {
 
-    pending();
+    coursesService.findAllCourses.and.returnValue(of(setupCourses()));
+    fixture.detectChanges();
+
+    const tabs = el.queryAll(By.css('.mat-tab-label'));
+
+    // simulates click interaction (user clicks on advanced courses tab)
+    // el.nativeElement.click() -> this is one way to do it, but not how we'll do it here
+    //This way is how we'll do it since we created a helper utility function in test-utils.ts
+    click(tabs[1]);
+
+    // adding this again still causes test to fail.
+    fixture.detectChanges();
+
+    // assigns all card titles into an array
+    const cardTitles = el.queryAll(By.css('.mat-card-title'));
+
+    expect(cardTitles.length).toBeGreaterThan(0, 'Could not find card titles');
+
+    expect(cardTitles[0].nativeElement.textContent).toContain('Angular Security Course');
 
   });
 
