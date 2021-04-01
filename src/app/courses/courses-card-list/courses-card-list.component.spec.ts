@@ -40,11 +40,12 @@ describe('CoursesCardListComponent', () => {
 
   });
 
-  // this test fails. fix will be in PR 20.
   it("should display the course list", () => {
 
     component.courses = setupCourses();
-    // identifies all elements with the css clsss 'course-card'
+    // fixes issue in PR 20, checks changes to the DOM, in this case without it, the nativeElement will always be blank.
+    fixture.detectChanges();
+
     const cards = el.queryAll(By.css(".course-card"));
 
     expect(cards).toBeTruthy('Could not find cards');
