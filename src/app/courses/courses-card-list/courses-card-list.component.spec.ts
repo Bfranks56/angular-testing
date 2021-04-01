@@ -68,7 +68,6 @@ describe('CoursesCardListComponent', () => {
       expect(title.nativeElement.textContent).toBe(course.titles.description);
       // needs .src to only pull the src, or else it will fail.
       expect(image.nativeElement.src).toBe(course.iconUrl);
-
   });
 
 

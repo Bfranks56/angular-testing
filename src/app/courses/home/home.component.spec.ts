@@ -21,6 +21,9 @@ describe('HomeComponent', () => {
   let fixture: ComponentFixture<HomeComponent>;
   let component:HomeComponent;
   let el: DebugElement;
+  let coursesService: any;
+
+  const beginnerCourses = setupCourses().filter(course => course.category === 'BEGINNER')
 
   // waitForAsync used for the promise on line 33
   beforeEach(waitForAsync(() => {
@@ -40,6 +43,7 @@ describe('HomeComponent', () => {
         fixture = TestBed.createComponent(HomeComponent);
         component = fixture.componentInstance;
         el = fixture.debugElement;
+        coursesService = TestBed.inject(CoursesService);
       });
   }));
 
@@ -51,8 +55,14 @@ describe('HomeComponent', () => {
 
 
   it("should display only beginner courses", () => {
+    // uses the courseService and returns only courses tagged as beginner
+    // 'of' is used by rxjs for observables is syncronously, no timeouts or anything like that.
+    coursesService.findAllCourses.and.returnValue(of(beginnerCourses));
+    fixture.detectChanges();
 
-    pending();
+    const tabs = el.queryAll(By.css('.mat-tab-label'));
+    expect(tabs.length).toBe(1, "unexpected number of tabs found")
+
 
   });
 
