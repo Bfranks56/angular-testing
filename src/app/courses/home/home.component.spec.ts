@@ -57,7 +57,7 @@ describe('HomeComponent', () => {
 
   it("should display only beginner courses", () => {
     // uses the courseService and returns only courses tagged as beginner
-    // 'of' is used by rxjs for observables is syncronously, no timeouts or anything like that.
+    // 'of' is used by rxjs for observables is synchronously, no timeouts or anything like that.
     coursesService.findAllCourses.and.returnValue(of(beginnerCourses));
     fixture.detectChanges();
 
