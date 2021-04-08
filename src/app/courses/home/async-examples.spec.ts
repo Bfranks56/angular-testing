@@ -1,3 +1,4 @@
+import { fakeAsync, flush, tick } from "@angular/core/testing";
 
 
 fdescribe ('Async Testing Examples', () => {
@@ -23,4 +24,34 @@ fdescribe ('Async Testing Examples', () => {
 
         }, 1000);
     });
+
+    // fakeAsync simulates the passage of time allowing for ALL tests to be completed asynchronously,
+    // so all assertions are run on the current state of page
+    it('Asynchronous test example - setTimeout()', fakeAsync(() => {
+        let test = false;
+
+        setTimeout(() => {});
+        setTimeout(() => {
+            console.log('running assertions setTimeout()');
+
+            test = true;
+
+        }, 1000);
+
+        // see the correlation between the time in settTimeout and tick. you can set multiple ticks,
+        // if you need to test multiple bits of code that need time to pass to execute.
+        // but the tick values should always match the time set for timeout
+        // tick can only be called in a fakeAsync zone, if called outside of a fakeAsync zone you will error
+        tick(500);
+        // insert testing criteria here
+        tick(499);
+        // insert testing criteria here
+        tick(1);
+        // with this, assertions no longer have to be applied within a timeout block.
+        expect(test).toBeTruthy();
+
+        // flush executes ALL timeouts executed by fakeAsync Zone
+        flush();
+    }));
+
 });
