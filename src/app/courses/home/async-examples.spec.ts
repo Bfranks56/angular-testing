@@ -54,4 +54,37 @@ fdescribe ('Async Testing Examples', () => {
         flush();
     }));
 
+    // Order of operations
+    // any synchronous code ie: sets and assertions meaning your expect will be evaluated before any micro or macrotasks can be run
+    // 2. microtasks ie: promises
+    // 3. macrotasks(tasks) ie: setTimeout
+    fit('Asynchronous test example - plain promise', () => {
+        let test = false;
+
+        console.log('creating promise');
+
+        // only added to test as a demonstration of task ordering
+        // setTimeout(() => {
+        //     console.log('setTimeout() first callback triggered');
+        // });
+
+        // setTimeout(() => {
+        //     console.log('setTimeout() second callback triggered');
+        // });
+
+        Promise.resolve().then(() =>{
+
+            console.log('Promise first then() evaluated successfully');
+
+            return Promise.resolve();
+        })
+        .then(() => {
+            console.log('Promise second then() evaluated successfully');
+
+            test = true;
+        });
+
+        console.log('Running test assertions');
+        expect(test).toBeTruthy();
+    });
 });
